@@ -1,2 +1,4 @@
 rootProject.name = 'MovieRecommendation'
+include 'auth-microservice'
+include 'user-microservice'
 
