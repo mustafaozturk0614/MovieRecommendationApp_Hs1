@@ -4,7 +4,8 @@ ext{
             postgresql: "42.7.3"
             ,lombok:"1.18.32"
             ,swaggerUI:"2.5.0",
-            mapstruct: "1.5.5.Final"
+            mapstruct: "1.5.5.Final",
+            springCloud:"4.1.1"
     ]
 
     libs=[
@@ -12,6 +13,7 @@ ext{
             springBootDataJpa: "org.springframework.boot:spring-boot-starter-data-jpa:${versions.springBoot}",
             springBootValidation: "org.springframework.boot:spring-boot-starter-validation:${versions.springBoot}",
             springBootDataMongo:"org.springframework.boot:spring-boot-starter-data-mongodb:${versions.springBoot}",
+            springCloudOpenFeign:"org.springframework.cloud:spring-cloud-starter-openfeign:${versions.springCloud}",
             mapstruct: "org.mapstruct:mapstruct:${versions.mapstruct}",
             mapstructProcessor: "org.mapstruct:mapstruct-processor:${versions.mapstruct}",
             postgresql: "org.postgresql:postgresql:${versions.postgresql}",

@@ -52,6 +52,7 @@ allprojects {
         implementation libs.swaggerUI
         implementation libs.mapstruct
         annotationProcessor libs.mapstructProcessor
+        implementation libs.springCloudOpenFeign
 
     }
     test {

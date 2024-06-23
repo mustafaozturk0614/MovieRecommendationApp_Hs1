@@ -25,4 +25,6 @@ public class AuthController {
     public ResponseEntity<RegisterResponseDto> register(@RequestBody  @Valid RegisterRequestDto dto) {
         return ResponseEntity.ok(authService.register(dto));
     }
+
+    // activate activasyon kodu ile  authun statusunu pending den active e cekecek
 }
