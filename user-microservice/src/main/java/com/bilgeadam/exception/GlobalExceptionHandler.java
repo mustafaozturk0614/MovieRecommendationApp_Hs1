@@ -2,7 +2,7 @@ package com.bilgeadam.exception;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -46,13 +46,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorMessage,HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorMessage> handleDataIntegrityViolationException(DataIntegrityViolationException e){
-        ErrorType errorType=ErrorType.DATA_INTEGRITY_VIOLATION;
-        ErrorMessage errorMessage=creteErrorMessage(errorType,e);
-        errorMessage.setMessage(errorType.getMessage()+"==>"+e.getCause().getMessage());
-        return new ResponseEntity<>(errorMessage,HttpStatus.BAD_REQUEST);
-    }
+
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public final ResponseEntity<ErrorMessage> handleMessageNotReadableException(
             HttpMessageNotReadableException exception) {

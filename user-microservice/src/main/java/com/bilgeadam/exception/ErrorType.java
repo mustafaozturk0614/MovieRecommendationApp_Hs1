@@ -12,7 +12,7 @@ public enum ErrorType {
     BAD_REQUEST(4200,"Parametre Hatası",HttpStatus.BAD_REQUEST),
 
     UNEXPECTED_ERROR(4210,"Beklenmeyen Hata",HttpStatus.BAD_REQUEST),
-    DATA_INTEGRITY_VIOLATION(4211,"Veri Butunlüğü ihlali: Girdi verileri eksik veya geçersiz" ,HttpStatus.BAD_REQUEST),
+
 
     ;
      private int code;
