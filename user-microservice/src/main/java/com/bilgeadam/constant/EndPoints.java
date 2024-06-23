@@ -14,7 +14,7 @@ public class EndPoints {
     public  static  final String SAVE="/save";
 
 //    User
-
+public  static  final String ACTIVATE_STATUS="/activate_status";
 
 
 

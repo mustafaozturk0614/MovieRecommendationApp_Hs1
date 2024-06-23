@@ -4,10 +4,8 @@ import com.bilgeadam.dto.request.UserProfileSaveRequestDto;
 import com.bilgeadam.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import static   com.bilgeadam.constant.EndPoints.*;
 
 @RestController
@@ -23,6 +21,14 @@ public class UserProfileController {
         return ResponseEntity.ok(userProfileService.saveUserProfile(dto));
 
     }
+
+    @PostMapping(ACTIVATE_STATUS)
+    public ResponseEntity<String> activateStatus(@RequestParam Long authId){
+        return ResponseEntity.ok(userProfileService.activateStatus(authId));
+    }
+
+    // updateUserProfile  eğer username veya email değişmiş ise auth microservisindede update edilecek
+
 
 
 }

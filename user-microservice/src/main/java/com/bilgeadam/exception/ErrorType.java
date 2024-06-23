@@ -12,7 +12,7 @@ public enum ErrorType {
     BAD_REQUEST(4200,"Parametre Hatası",HttpStatus.BAD_REQUEST),
 
     UNEXPECTED_ERROR(4210,"Beklenmeyen Hata",HttpStatus.BAD_REQUEST),
-
+    USER_NOT_FOUND(4211,"Kullanıcı bulunamadı",HttpStatus.NOT_FOUND),
 
     ;
      private int code;

@@ -2,6 +2,7 @@ package com.bilgeadam.controller;
 
 import static  com.bilgeadam.constant.EndPoints.*;
 
+import com.bilgeadam.dto.request.ActivateRequestDto;
 import com.bilgeadam.dto.request.RegisterRequestDto;
 import com.bilgeadam.dto.response.RegisterResponseDto;
 import com.bilgeadam.entity.Auth;
@@ -27,4 +28,8 @@ public class AuthController {
     }
 
     // activate activasyon kodu ile  authun statusunu pending den active e cekecek
+    @PostMapping(ACTIVATE_STATUS)
+    public ResponseEntity<String> activateStatus(@RequestBody ActivateRequestDto dto) {
+        return ResponseEntity.ok(authService.activateStatus(dto));
+    }
 }

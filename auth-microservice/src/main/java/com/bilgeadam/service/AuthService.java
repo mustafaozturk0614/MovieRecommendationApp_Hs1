@@ -1,9 +1,11 @@
 package com.bilgeadam.service;
 
+import com.bilgeadam.dto.request.ActivateRequestDto;
 import com.bilgeadam.dto.request.RegisterRequestDto;
 import com.bilgeadam.dto.request.UserProfileSaveRequestDto;
 import com.bilgeadam.dto.response.RegisterResponseDto;
 import com.bilgeadam.entity.Auth;
+import com.bilgeadam.entity.enums.EStatus;
 import com.bilgeadam.exception.AuthManagerException;
 import com.bilgeadam.exception.ErrorType;
 import com.bilgeadam.manager.IUserManager;
@@ -12,6 +14,8 @@ import com.bilgeadam.repository.AuthRepository;
 import com.bilgeadam.utility.CodeGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +38,25 @@ public class AuthService {
         RegisterResponseDto registerResponseDto=IAuthMapper.INSTANCE.toRegisterResponseDto(auth);
 
         return  registerResponseDto;//
+
+    }
+
+    public String activateStatus(ActivateRequestDto dto) {
+        Optional<Auth> auth=authRepository.findById(dto.getId());
+        if (auth.isEmpty()){
+            throw  new AuthManagerException(ErrorType.USER_NOT_FOUND);
+        }
+        if (auth.get().getStatus().equals(EStatus.ACTIVE)){
+            throw  new AuthManagerException(ErrorType.USER_AlREADY_ACTIVE);
+        }
+        if(auth.get().getActivationCode().equals(dto.getActivationCode())){
+            auth.get().setStatus(EStatus.ACTIVE);
+            authRepository.save(auth.get());
+            userManager.activateStatus(auth.get().getId());
+            return "Aktivasyon Basarılı";
+        }else {
+            throw  new AuthManagerException(ErrorType.INVALID_ACTIVATION_CODE);
+        }
 
     }
 }

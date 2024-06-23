@@ -14,7 +14,14 @@ public enum ErrorType {
     UNEXPECTED_ERROR(4110,"Beklenmeyen Hata",HttpStatus.BAD_REQUEST),
     DATA_INTEGRITY_VIOLATION(4111,"Veri Butunlüğü ihlali: Girdi verileri eksik veya geçersiz" ,HttpStatus.BAD_REQUEST),
     LOGIN_ERROR(4112,"Kullancı adı veye Şifre Hatalı !!!",HttpStatus.UNAUTHORIZED),
-    USERNAME_ALREADY_EXISTS(4113,"Kullanıcı adı zaten mevcut",HttpStatus.BAD_REQUEST);
+    USERNAME_ALREADY_EXISTS(4113,"Kullanıcı adı zaten mevcut",HttpStatus.BAD_REQUEST),
+    USER_NOT_FOUND(4114,"Kullanıcı bulunamadı",HttpStatus.NOT_FOUND),
+    USER_AlREADY_ACTIVE(4115,"Kullanıcı zaten aktif",HttpStatus.BAD_REQUEST),
+    INVALID_ACTIVATION_CODE(4116,"Gecersiz aktivasyon kodu",HttpStatus.BAD_REQUEST),
+
+
+
+    ;
 
      private int code;
      private String message;
