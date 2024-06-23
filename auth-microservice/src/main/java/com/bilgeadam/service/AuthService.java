@@ -21,9 +21,9 @@ public class AuthService {
 
         Auth auth= IAuthMapper.INSTANCE.toAuth(dto);
 
-       if (authRepository.existsByUsername(dto.getUsername())){
-           throw new AuthManagerException(ErrorType.USERNAME_ALREADY_EXISTS);
-       }
+//       if (authRepository.existsByUsername(dto.getUsername())){
+//           throw new AuthManagerException(ErrorType.USERNAME_ALREADY_EXISTS);
+//       }
 
         String activationCode= CodeGenerator.generateCode();
         auth.setActivationCode(activationCode);

@@ -1,5 +1,7 @@
 package com.bilgeadam.dto.request;
 
+import com.bilgeadam.validation.UniqueEmail;
+import com.bilgeadam.validation.UniqueUsername;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -14,6 +16,7 @@ import lombok.*;
 public class RegisterRequestDto {
     @NotBlank(message = "Kullanıcı adı boş geçilemez!!!")
     @Size(min = 2,max=32, message = "Kullanıcı adı uzunlugu en az 2 karakter en fazla 32 karakter olabilir !!!")
+    @UniqueUsername
     private String username;
 
     @NotBlank(message = "Şifre adı boş geçilemez!!!")
@@ -22,5 +25,6 @@ public class RegisterRequestDto {
     private String password;
 
     @Email
+    @UniqueEmail
     private String email;
 }
