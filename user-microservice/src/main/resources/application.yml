@@ -9,3 +9,7 @@ spring:
       username: hs1
       password: root
       database: userProfileDb
+
+jwt:
+  secret: bilgeadamsecretkey
+  issuer: bilgeadam

@@ -18,6 +18,9 @@ public enum ErrorType {
     USER_NOT_FOUND(4114,"Kullanıcı bulunamadı",HttpStatus.NOT_FOUND),
     USER_AlREADY_ACTIVE(4115,"Kullanıcı zaten aktif",HttpStatus.BAD_REQUEST),
     INVALID_ACTIVATION_CODE(4116,"Gecersiz aktivasyon kodu",HttpStatus.BAD_REQUEST),
+    ACCOUNT_NOT_ACTIVE(4117,"Hesap aktif degil",HttpStatus.BAD_REQUEST),
+    INVALID_TOKEN(4118,"Gecersiz token",HttpStatus.BAD_REQUEST),
+    TOKEN_NOT_CREATED(4119,"Token olusturulamadi",HttpStatus.BAD_REQUEST),
 
 
 

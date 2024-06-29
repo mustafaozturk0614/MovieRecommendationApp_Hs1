@@ -13,7 +13,7 @@ public enum ErrorType {
 
     UNEXPECTED_ERROR(4210,"Beklenmeyen Hata",HttpStatus.BAD_REQUEST),
     USER_NOT_FOUND(4211,"Kullanıcı bulunamadı",HttpStatus.NOT_FOUND),
-
+    INVALID_TOKEN(4212,"Gecersiz token",HttpStatus.UNAUTHORIZED)
     ;
      private int code;
      private String message;

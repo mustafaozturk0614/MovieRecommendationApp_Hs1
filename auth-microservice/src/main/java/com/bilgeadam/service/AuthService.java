@@ -1,6 +1,7 @@
 package com.bilgeadam.service;
 
 import com.bilgeadam.dto.request.ActivateRequestDto;
+import com.bilgeadam.dto.request.LoginRequestDto;
 import com.bilgeadam.dto.request.RegisterRequestDto;
 import com.bilgeadam.dto.request.UserProfileSaveRequestDto;
 import com.bilgeadam.dto.response.RegisterResponseDto;
@@ -12,6 +13,7 @@ import com.bilgeadam.manager.IUserManager;
 import com.bilgeadam.mapper.IAuthMapper;
 import com.bilgeadam.repository.AuthRepository;
 import com.bilgeadam.utility.CodeGenerator;
+import com.bilgeadam.utility.JwtTokenManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,7 @@ public class AuthService {
 
     private final AuthRepository authRepository;
     private final IUserManager userManager;
+    private final JwtTokenManager jwtTokenManager;
 
     public RegisterResponseDto register(RegisterRequestDto dto) {
 
@@ -58,5 +61,16 @@ public class AuthService {
             throw  new AuthManagerException(ErrorType.INVALID_ACTIVATION_CODE);
         }
 
+    }
+
+    public String login(LoginRequestDto dto) {
+    Auth auth=authRepository.findByUsernameAndPassword(dto.getUsername(),dto.getPassword())
+            .orElseThrow(()->new AuthManagerException(ErrorType.USER_NOT_FOUND,"Kullanıcı adı veya şifre Hatalı "));
+
+    if (!auth.getStatus().equals(EStatus.ACTIVE)){
+        throw  new AuthManagerException(ErrorType.ACCOUNT_NOT_ACTIVE);
+    }
+        return jwtTokenManager.createToken(auth.getId(),auth.getRole().toString())
+                .orElseThrow(()->new AuthManagerException(ErrorType.TOKEN_NOT_CREATED));
     }
 }

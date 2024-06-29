@@ -1,7 +1,9 @@
 package com.bilgeadam.controller;
 
 import com.bilgeadam.dto.request.UserProfileSaveRequestDto;
+import com.bilgeadam.dto.request.UserProfileUpdateRequestDto;
 import com.bilgeadam.service.UserProfileService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +30,12 @@ public class UserProfileController {
     }
 
     // updateUserProfile  eğer username veya email değişmiş ise auth microservisindede update edilecek
+    @PutMapping(UPDATE)
+    public ResponseEntity<String> updateUserProfile(@RequestBody @Valid UserProfileUpdateRequestDto dto){
+
+        return ResponseEntity.ok(userProfileService.updateUserProfile(dto));
 
 
+    }
 
 }

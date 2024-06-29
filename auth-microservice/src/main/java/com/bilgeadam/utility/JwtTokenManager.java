@@ -4,6 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.bilgeadam.exception.AuthManagerException;
+import com.bilgeadam.exception.ErrorType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
@@ -18,8 +20,8 @@ public class JwtTokenManager {
     String secretKey;
     @Value("${jwt.issuer}")
     String issuer;
-    @Value("${jwt.expiration}")
-    int expiration;
+
+    int expiration=1000*5*60;
 
 
     public Optional<String> createToken(Long id){
@@ -27,7 +29,7 @@ public class JwtTokenManager {
         String token = null;
         try {
             token= JWT.create().withIssuer(issuer).withIssuedAt(new Date())
-                    .withExpiresAt(new Date(System.currentTimeMillis()+expiration*1000))
+                    .withExpiresAt(new Date(System.currentTimeMillis()+expiration))
                     .withClaim("authId",id).sign(Algorithm.HMAC512(secretKey));
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -42,7 +44,7 @@ public class JwtTokenManager {
         String token = null;
         try {
             token= JWT.create().withIssuer(issuer).withIssuedAt(new Date())
-                    .withExpiresAt(new Date(System.currentTimeMillis()+expiration*1000))
+                    .withExpiresAt(new Date(System.currentTimeMillis()+expiration))
                     .withClaim("authId",id)
                     .withClaim("role",role)
                     .sign(Algorithm.HMAC512(secretKey));
@@ -66,38 +68,24 @@ public class JwtTokenManager {
     }
 
     public Optional<String> getRoleFromToken(String token){
-        try {
-            Optional<DecodedJWT> jwt = verifyToken(token);
-            if (jwt.isEmpty()) {
-                return Optional.empty();
-            }
-            String role = jwt.get().getClaim("role").asString();
+           DecodedJWT jwt = verifyToken(token);
+            String role = jwt.getClaim("role").asString();
             return Optional.of(role);
 
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            return  Optional.empty();
-        }
+
     }
     public Optional<Long> getAuthIdFromToken(String token){
-        try {
-            Optional<DecodedJWT> jwt = verifyToken(token);
-            if (jwt.isEmpty()) {
-                return Optional.empty();
-            }
-            Long authId = jwt.get().getClaim("authId").asLong();
+
+            DecodedJWT jwt = verifyToken(token);
+            Long authId = jwt.getClaim("authId").asLong();
             return Optional.of(authId);
 
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            return  Optional.empty();
-        }
     }
 
-    public Optional<DecodedJWT> verifyToken(String token){
+    public DecodedJWT verifyToken(String token){
         Algorithm algorithm = Algorithm.HMAC512(secretKey);
         JWTVerifier verifier = JWT.require(algorithm).withIssuer(issuer).build();
         DecodedJWT jwt = verifier.verify(token);
-        return Optional.ofNullable(jwt);
+        return Optional.ofNullable(jwt).orElseThrow(()->new AuthManagerException(ErrorType.INVALID_TOKEN));
     }
 }
