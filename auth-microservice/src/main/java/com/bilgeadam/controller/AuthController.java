@@ -5,6 +5,7 @@ import static  com.bilgeadam.constant.EndPoints.*;
 import com.bilgeadam.dto.request.ActivateRequestDto;
 import com.bilgeadam.dto.request.LoginRequestDto;
 import com.bilgeadam.dto.request.RegisterRequestDto;
+import com.bilgeadam.dto.request.UpdateEmailAndUsernameRequestDto;
 import com.bilgeadam.dto.response.RegisterResponseDto;
 import com.bilgeadam.entity.Auth;
 import com.bilgeadam.service.AuthService;
@@ -59,5 +60,10 @@ public class AuthController {
     @PostMapping(LOGIN)
     private ResponseEntity<String> login(@RequestBody @Valid LoginRequestDto dto){
         return ResponseEntity.ok(authService.login(dto));
+    }
+
+    @PutMapping(UPDATE)
+    public ResponseEntity<String> updateEmailAndUsername(@RequestBody @Valid UpdateEmailAndUsernameRequestDto dto){
+        return ResponseEntity.ok(authService.updateEmailAndUsername(dto));
     }
 }

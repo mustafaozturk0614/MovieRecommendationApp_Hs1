@@ -1,9 +1,6 @@
 package com.bilgeadam.service;
 
-import com.bilgeadam.dto.request.ActivateRequestDto;
-import com.bilgeadam.dto.request.LoginRequestDto;
-import com.bilgeadam.dto.request.RegisterRequestDto;
-import com.bilgeadam.dto.request.UserProfileSaveRequestDto;
+import com.bilgeadam.dto.request.*;
 import com.bilgeadam.dto.response.RegisterResponseDto;
 import com.bilgeadam.entity.Auth;
 import com.bilgeadam.entity.enums.EStatus;
@@ -14,6 +11,7 @@ import com.bilgeadam.mapper.IAuthMapper;
 import com.bilgeadam.repository.AuthRepository;
 import com.bilgeadam.utility.CodeGenerator;
 import com.bilgeadam.utility.JwtTokenManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +25,7 @@ public class AuthService {
     private final IUserManager userManager;
     private final JwtTokenManager jwtTokenManager;
 
+    @Transactional
     public RegisterResponseDto register(RegisterRequestDto dto) {
 
         Auth auth= IAuthMapper.INSTANCE.toAuth(dto);
@@ -43,7 +42,7 @@ public class AuthService {
         return  registerResponseDto;//
 
     }
-
+    @Transactional
     public String activateStatus(ActivateRequestDto dto) {
         Optional<Auth> auth=authRepository.findById(dto.getId());
         if (auth.isEmpty()){
@@ -72,5 +71,13 @@ public class AuthService {
     }
         return jwtTokenManager.createToken(auth.getId(),auth.getRole().toString())
                 .orElseThrow(()->new AuthManagerException(ErrorType.TOKEN_NOT_CREATED));
+    }
+
+    public String updateEmailAndUsername(UpdateEmailAndUsernameRequestDto dto) {
+        Auth auth=authRepository.findById(dto.getId()).orElseThrow(()->new AuthManagerException(ErrorType.USER_NOT_FOUND));
+        auth.setUsername(dto.getUsername());
+        auth.setEmail(dto.getEmail());
+        authRepository.save(auth);
+        return "Bilgileriniz Güncellendi";
     }
 }

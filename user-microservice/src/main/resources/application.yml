@@ -1,15 +1,8 @@
-server:
-  port: 8091
-
 spring:
-  data:
-    mongodb:
-      host: localhost
-      port: 29017
-      username: hs1
-      password: root
-      database: userProfileDb
-
-jwt:
-  secret: bilgeadamsecretkey
-  issuer: bilgeadam
+  cloud:
+    config:
+      uri: http://localhost:8888
+  config:
+    import: "configserver:"
+  application:
+    name: user-service-application

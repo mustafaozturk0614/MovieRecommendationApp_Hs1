@@ -1,11 +1,13 @@
 package com.bilgeadam.service;
 
+import com.bilgeadam.dto.request.UpdateEmailAndUsernameRequestDto;
 import com.bilgeadam.dto.request.UserProfileSaveRequestDto;
 import com.bilgeadam.dto.request.UserProfileUpdateRequestDto;
 import com.bilgeadam.entity.UserProfile;
 import com.bilgeadam.entity.enums.EStatus;
 import com.bilgeadam.exception.ErrorType;
 import com.bilgeadam.exception.UserManagerException;
+import com.bilgeadam.manager.AuthManager;
 import com.bilgeadam.mapper.IUserMapper;
 import com.bilgeadam.repository.UserProfileRepository;
 import com.bilgeadam.utility.JwtTokenManager;
@@ -13,8 +15,11 @@ import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.bouncycastle.jcajce.provider.asymmetric.rsa.CipherSpi;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.Optional;
+
+import static com.bilgeadam.constant.EndPoints.UPDATE;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +27,10 @@ public class UserProfileService {
 
     private final UserProfileRepository userProfileRepository;
     private final JwtTokenManager jwtTokenManager;
+
+    private final AuthManager authManager;
+
+
     public Object saveUserProfile(UserProfileSaveRequestDto dto) {
         UserProfile userProfile= IUserMapper.INSTANCE.toUserProfile(dto);
         return userProfileRepository.save(userProfile);
@@ -44,8 +53,19 @@ public class UserProfileService {
 
         UserProfile userProfile=userProfileRepository.findByAuthId(authId)
                 .orElseThrow(()->new UserManagerException(ErrorType.USER_NOT_FOUND));
-        userProfile.setUsername(dto.getUsername());
-        userProfile.setEmail(dto.getEmail());
+        if (!dto.getUsername().equals(
+                userProfile.getUsername()) ||
+       ! dto.getEmail().equals(userProfile.getEmail())
+        ){
+            userProfile.setUsername(dto.getUsername());
+            userProfile.setEmail(dto.getEmail());
+            // authservice a istek atacagız
+            authManager.updateEmailAndUsername(UpdateEmailAndUsernameRequestDto.builder()
+                            .email(dto.getEmail())
+                            .username(dto.getUsername())
+                            .id(authId)
+                    .build());
+        }
 
         userProfile.setAbout(dto.getAbout());
         userProfile.setAddress(dto.getAddress());
