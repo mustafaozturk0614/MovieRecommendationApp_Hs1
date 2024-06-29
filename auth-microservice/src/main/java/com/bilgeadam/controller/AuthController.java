@@ -32,4 +32,8 @@ public class AuthController {
     public ResponseEntity<String> activateStatus(@RequestBody ActivateRequestDto dto) {
         return ResponseEntity.ok(authService.activateStatus(dto));
     }
+    // token olusturma ve verify etmek için deneme amaclı end pointler
+
+
+
 }

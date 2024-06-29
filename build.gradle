@@ -53,6 +53,7 @@ allprojects {
         implementation libs.mapstruct
         annotationProcessor libs.mapstructProcessor
         implementation libs.springCloudOpenFeign
+        implementation libs.javaJwt
 
     }
     test {

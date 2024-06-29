@@ -5,7 +5,9 @@ ext{
             ,lombok:"1.18.32"
             ,swaggerUI:"2.5.0",
             mapstruct: "1.5.5.Final",
-            springCloud:"4.1.1"
+            springCloud:"4.1.1",
+            jwt:"4.4.0"
+
     ]
 
     libs=[
@@ -19,6 +21,7 @@ ext{
             postgresql: "org.postgresql:postgresql:${versions.postgresql}",
             lombok: "org.projectlombok:lombok:${versions.lombok}",
             swaggerUI: "org.springdoc:springdoc-openapi-starter-webmvc-ui:${versions.swaggerUI}",
+            javaJwt: "com.auth0:java-jwt:${versions.jwt}"
 
 
     ]
