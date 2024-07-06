@@ -2,6 +2,8 @@ package com.bilgeadam.controller;
 
 import com.bilgeadam.dto.request.UserProfileSaveRequestDto;
 import com.bilgeadam.dto.request.UserProfileUpdateRequestDto;
+import com.bilgeadam.entity.UserProfile;
+import com.bilgeadam.repository.UserProfileRepository;
 import com.bilgeadam.service.UserProfileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,4 +40,9 @@ public class UserProfileController {
 
     }
 
+    //findbyusername endpointi yazalım cachelemi isleminide servis katmanıdna yapalım
+    @GetMapping(FIND_BY_USERNAME+"/{username}")
+    public ResponseEntity<UserProfile> findbyUsername(@PathVariable String username){
+        return ResponseEntity.ok(userProfileService.findByUsername(username));
+    }
 }

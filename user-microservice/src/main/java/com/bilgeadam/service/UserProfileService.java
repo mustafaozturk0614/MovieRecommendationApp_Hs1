@@ -14,6 +14,7 @@ import com.bilgeadam.utility.JwtTokenManager;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.bouncycastle.jcajce.provider.asymmetric.rsa.CipherSpi;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -75,5 +76,16 @@ public class UserProfileService {
 
         userProfileRepository.save(userProfile);
         return "Bilgileriniz Güncellendi";
+    }
+
+    @Cacheable(value = "findByUsername")
+    public UserProfile findByUsername(String username) {
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return   userProfileRepository.findByUsername(username)
+              .orElseThrow(()->new UserManagerException(ErrorType.USER_NOT_FOUND));
     }
 }

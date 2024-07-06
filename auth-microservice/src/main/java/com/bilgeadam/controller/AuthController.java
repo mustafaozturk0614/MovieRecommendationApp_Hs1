@@ -12,6 +12,8 @@ import com.bilgeadam.service.AuthService;
 import com.bilgeadam.utility.JwtTokenManager;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,8 @@ public class AuthController {
 
     private final AuthService authService;
     private final JwtTokenManager jwtTokenManager;
+
+    private final CacheManager cacheManager;
 
     @PostMapping(REGISTER) //api/v1/auth/register
     public ResponseEntity<RegisterResponseDto> register(@RequestBody  @Valid RegisterRequestDto dto) {
@@ -76,7 +80,18 @@ public class AuthController {
         }catch (Exception e){
             throw new RuntimeException();
         }
-
         return value.toUpperCase();
     }
-}
+    @GetMapping("/redis-delete")
+    @CacheEvict(cacheNames = "redisexample",allEntries =true)
+    public void redisDelete(){}
+
+
+    @GetMapping("/redis-delete-2")
+    public void redisDelete2(String value){
+            cacheManager.getCache("redisexample").evict(value);
+
+    }
+
+    }
+

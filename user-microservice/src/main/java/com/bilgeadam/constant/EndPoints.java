@@ -17,5 +17,5 @@ public class EndPoints {
 public  static  final String ACTIVATE_STATUS="/activate_status";
 
 
-
+    public static final String FIND_BY_USERNAME ="/find-by-username"; ;
 }
