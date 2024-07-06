@@ -54,6 +54,7 @@ allprojects {
         annotationProcessor libs.mapstructProcessor
         implementation libs.springCloudOpenFeign
         implementation libs.javaJwt
+        implementation libs.springBootRedis
 
     }
     test {

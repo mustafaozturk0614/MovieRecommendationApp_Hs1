@@ -12,6 +12,7 @@ import com.bilgeadam.service.AuthService;
 import com.bilgeadam.utility.JwtTokenManager;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,5 +66,17 @@ public class AuthController {
     @PutMapping(UPDATE)
     public ResponseEntity<String> updateEmailAndUsername(@RequestBody @Valid UpdateEmailAndUsernameRequestDto dto){
         return ResponseEntity.ok(authService.updateEmailAndUsername(dto));
+    }
+
+    @GetMapping("/redis")
+    @Cacheable(value = "redisexample")
+    public String redisExample(String value){
+        try {
+            Thread.sleep(2000);
+        }catch (Exception e){
+            throw new RuntimeException();
+        }
+
+        return value.toUpperCase();
     }
 }
