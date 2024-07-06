@@ -14,6 +14,7 @@ import com.bilgeadam.utility.JwtTokenManager;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.bouncycastle.jcajce.provider.asymmetric.rsa.CipherSpi;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -30,6 +31,7 @@ public class UserProfileService {
     private final JwtTokenManager jwtTokenManager;
 
     private final AuthManager authManager;
+    private final CacheManager cacheManager;
 
 
     public Object saveUserProfile(UserProfileSaveRequestDto dto) {
@@ -75,6 +77,8 @@ public class UserProfileService {
         userProfile.setSurName(dto.getSurName());
 
         userProfileRepository.save(userProfile);
+     //   cacheManager.getCache("findByUsername").evict(userProfile.getUsername());
+        cacheManager.getCache("findByUsername").put(userProfile.getUsername(),userProfile);
         return "Bilgileriniz Güncellendi";
     }
 
