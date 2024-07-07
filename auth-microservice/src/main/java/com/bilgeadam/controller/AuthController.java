@@ -20,6 +20,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -101,5 +102,10 @@ public class AuthController {
         return value.toUpperCase();
     }
 
+    @GetMapping(FIND_ALL)
+    public ResponseEntity<List<Auth>> findAll() {
+        return ResponseEntity.ok(authService.findAll());
+
+    }
     }
 

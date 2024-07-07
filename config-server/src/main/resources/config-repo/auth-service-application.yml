@@ -1,6 +1,10 @@
 server:
   port: 8095
 spring:
+  security:
+    user:
+      name: hs1
+      password: 123
   datasource:
     username: postgres
     password: root

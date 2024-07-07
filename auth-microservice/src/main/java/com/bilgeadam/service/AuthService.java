@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -83,4 +84,11 @@ public class AuthService {
     }
 
 
+    public List<Auth> findAll() {
+        return  authRepository.findAll();
+    }
+
+    public Optional<Auth> findById(Long authId) {
+        return authRepository.findById(authId);
+    }
 }
