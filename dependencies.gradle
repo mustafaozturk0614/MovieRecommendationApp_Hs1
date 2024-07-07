@@ -16,6 +16,7 @@ ext{
             springBootValidation: "org.springframework.boot:spring-boot-starter-validation:${versions.springBoot}",
             springBootDataMongo:"org.springframework.boot:spring-boot-starter-data-mongodb:${versions.springBoot}",
             springBootRedis:"org.springframework.boot:spring-boot-starter-data-redis:${versions.springBoot}",
+            springBootElasticSearch:"org.springframework.boot:spring-boot-starter-data-elasticsearch:${versions.springBoot}",
             springCloudOpenFeign:"org.springframework.cloud:spring-cloud-starter-openfeign:${versions.springCloud}",
             springCloudConfigStarter:"org.springframework.cloud:spring-cloud-starter-config:${versions.springCloud}",
             springCloudConfigServer:"org.springframework.cloud:spring-cloud-config-server:${versions.springCloud}",

@@ -2,6 +2,7 @@ package com.bilgeadam.controller;
 
 import com.bilgeadam.dto.request.UserProfileSaveRequestDto;
 import com.bilgeadam.dto.request.UserProfileUpdateRequestDto;
+import com.bilgeadam.dto.response.UserProfileFindAllResponseDto;
 import com.bilgeadam.entity.UserProfile;
 import com.bilgeadam.repository.UserProfileRepository;
 import com.bilgeadam.service.UserProfileService;
@@ -9,6 +10,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static   com.bilgeadam.constant.EndPoints.*;
 
@@ -44,5 +47,10 @@ public class UserProfileController {
     @GetMapping(FIND_BY_USERNAME+"/{username}")
     public ResponseEntity<UserProfile> findbyUsername(@PathVariable String username){
         return ResponseEntity.ok(userProfileService.findByUsername(username));
+    }
+
+    @GetMapping(FIND_ALL)
+    public ResponseEntity<List<UserProfileFindAllResponseDto>> findAll(){
+        return ResponseEntity.ok(userProfileService.findAll());
     }
 }

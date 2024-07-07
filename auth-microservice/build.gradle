@@ -2,4 +2,5 @@ dependencies {
     implementation libs.postgresql
     implementation libs.springBootDataJpa
     implementation libs.springCloudConfigClient
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }

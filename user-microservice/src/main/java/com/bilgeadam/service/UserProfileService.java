@@ -3,6 +3,7 @@ package com.bilgeadam.service;
 import com.bilgeadam.dto.request.UpdateEmailAndUsernameRequestDto;
 import com.bilgeadam.dto.request.UserProfileSaveRequestDto;
 import com.bilgeadam.dto.request.UserProfileUpdateRequestDto;
+import com.bilgeadam.dto.response.UserProfileFindAllResponseDto;
 import com.bilgeadam.entity.UserProfile;
 import com.bilgeadam.entity.enums.EStatus;
 import com.bilgeadam.exception.ErrorType;
@@ -19,6 +20,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.bilgeadam.constant.EndPoints.UPDATE;
@@ -91,5 +93,9 @@ public class UserProfileService {
         }
         return   userProfileRepository.findByUsername(username)
               .orElseThrow(()->new UserManagerException(ErrorType.USER_NOT_FOUND));
+    }
+
+    public List<UserProfileFindAllResponseDto> findAll() {
+        return IUserMapper.INSTANCE.toUserProfileFindAllResponseDto( userProfileRepository.findAll());
     }
 }

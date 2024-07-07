@@ -3,4 +3,6 @@ include 'auth-microservice'
 include 'user-microservice'
 include 'config-server'
 include 'git-config-server'
+include 'auth-service'
+include 'elastic-search'
 

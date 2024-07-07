@@ -10,6 +10,7 @@ import com.bilgeadam.dto.response.RegisterResponseDto;
 import com.bilgeadam.entity.Auth;
 import com.bilgeadam.service.AuthService;
 import com.bilgeadam.utility.JwtTokenManager;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,21 +23,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-
+@RequiredArgsConstructor
 @RequestMapping(AUTH)// api/v1/auth
 public class AuthController {
-
-    private final AuthService authService;
+@Autowired
+    private  AuthService authService;
 
     private final JwtTokenManager jwtTokenManager;
 
     private final CacheManager cacheManager;
-
-    public AuthController(AuthService authService, JwtTokenManager jwtTokenManager, CacheManager cacheManager) {
-        this.authService = authService;
-        this.jwtTokenManager = jwtTokenManager;
-        this.cacheManager = cacheManager;
+    @PostConstruct
+    public void init() {
+        System.out.println("JwtTokenManager: {}" + jwtTokenManager);
+        System.out.println("CacheManager: {}"+ cacheManager);
+        if (jwtTokenManager == null) {
+            throw new IllegalStateException("JwtTokenManager is not injected!");
+        }
+        if (cacheManager == null) {
+            throw new IllegalStateException("CacheManager is not injected!");
+        }
     }
+
+
 
     @PostMapping(REGISTER) //api/v1/auth/register
     public ResponseEntity<RegisterResponseDto> register(@RequestBody  @Valid RegisterRequestDto dto) {
@@ -83,25 +91,14 @@ public class AuthController {
         return ResponseEntity.ok(authService.updateEmailAndUsername(dto));
     }
 
-//    @GetMapping("/redis")
-//    @Cacheable(value = "redisexample")
-//    public String redisExample(String value){
-//        try {
-//            Thread.sleep(2000);
-//        }catch (Exception e){
-//            throw new RuntimeException();
-//        }
-//        return value.toUpperCase();
-//    }
-    @GetMapping("/redis-delete")
-    @CacheEvict(cacheNames = "redisexample",allEntries =true)
-    public void redisDelete(){}
-
-
-    @GetMapping("/redis-delete-2")
-    public void redisDelete2(String value){
-            cacheManager.getCache("redisexample").evict(value);
-
+        @GetMapping("/redis")
+    public String redisExample(String value){
+        try {
+            Thread.sleep(2000);
+        }catch (Exception e){
+            throw new RuntimeException();
+        }
+        return value.toUpperCase();
     }
 
     }

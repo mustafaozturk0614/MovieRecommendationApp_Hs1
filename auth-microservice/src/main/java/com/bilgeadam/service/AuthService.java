@@ -43,7 +43,7 @@ public class AuthService {
         return  registerResponseDto;//
 
     }
-    @Transactional
+
     public String activateStatus(ActivateRequestDto dto) {
         Optional<Auth> auth=authRepository.findById(dto.getId());
         if (auth.isEmpty()){
@@ -62,7 +62,7 @@ public class AuthService {
         }
 
     }
-
+    @Transactional
     public String login(LoginRequestDto dto) {
     Auth auth=authRepository.findByUsernameAndPassword(dto.getUsername(),dto.getPassword())
             .orElseThrow(()->new AuthManagerException(ErrorType.USER_NOT_FOUND,"Kullanıcı adı veya şifre Hatalı "));
