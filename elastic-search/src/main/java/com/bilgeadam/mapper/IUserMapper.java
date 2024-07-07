@@ -1,5 +1,6 @@
 package com.bilgeadam.mapper;
 
+import com.bilgeadam.dto.request.UserProfileSaveRequestDto;
 import com.bilgeadam.dto.response.UserProfileFindAllResponseDto;
 import com.bilgeadam.entity.UserProfile;
 import org.mapstruct.Mapper;
@@ -14,5 +15,7 @@ public interface IUserMapper {
 
     IUserMapper INSTANCE = Mappers.getMapper(IUserMapper.class);
 
+
+    UserProfile toUserProfile(UserProfileSaveRequestDto dto);
 
 }

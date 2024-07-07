@@ -15,4 +15,5 @@ public interface AuthManager {
     @PutMapping(UPDATE)
      ResponseEntity<String> updateEmailAndUsername(@RequestBody @Valid UpdateEmailAndUsernameRequestDto dto);
 
+
 }

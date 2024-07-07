@@ -9,6 +9,7 @@ import com.bilgeadam.entity.enums.EStatus;
 import com.bilgeadam.exception.ErrorType;
 import com.bilgeadam.exception.UserManagerException;
 import com.bilgeadam.manager.AuthManager;
+import com.bilgeadam.manager.ElasticManager;
 import com.bilgeadam.mapper.IUserMapper;
 import com.bilgeadam.repository.UserProfileRepository;
 import com.bilgeadam.utility.JwtTokenManager;
@@ -33,12 +34,19 @@ public class UserProfileService {
     private final JwtTokenManager jwtTokenManager;
 
     private final AuthManager authManager;
+    private final ElasticManager elasticManager;
     private final CacheManager cacheManager;
 
 
-    public Object saveUserProfile(UserProfileSaveRequestDto dto) {
+    public UserProfile saveUserProfile(UserProfileSaveRequestDto dto) {
         UserProfile userProfile= IUserMapper.INSTANCE.toUserProfile(dto);
-        return userProfileRepository.save(userProfile);
+       userProfileRepository.save(userProfile);
+       dto.setId(userProfile.getId());
+
+        /// elastic searche veri ileteceğiz
+        elasticManager.save(dto);
+
+        return userProfile;
     }
 
     public String activateStatus(Long authId) {

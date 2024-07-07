@@ -1,5 +1,6 @@
 package com.bilgeadam.controller;
 
+import com.bilgeadam.dto.request.UserProfileSaveRequestDto;
 import com.bilgeadam.entity.UserProfile;
 import com.bilgeadam.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
@@ -22,5 +23,10 @@ public class UserProfileController {
     @GetMapping(FIND_ALL)
     public ResponseEntity<Iterable<UserProfile>> findAll(){
         return ResponseEntity.ok(userProfileService.findAll());
+    }
+
+    @PostMapping(SAVE)
+    ResponseEntity<UserProfile> save(@RequestBody UserProfileSaveRequestDto dto){
+        return ResponseEntity.ok(userProfileService.save(dto));
     }
 }

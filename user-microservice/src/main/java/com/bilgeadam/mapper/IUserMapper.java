@@ -18,4 +18,5 @@ public interface IUserMapper {
     UserProfile toUserProfile(UserProfileSaveRequestDto dto);
 
     List<UserProfileFindAllResponseDto> toUserProfileFindAllResponseDto(List<UserProfile> userProfiles);
+
 }
