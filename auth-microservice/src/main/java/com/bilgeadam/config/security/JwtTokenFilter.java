@@ -20,33 +20,26 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
-
     private final JwtTokenManager jwtTokenManager;
-
     private final JwtUserDetail jwtUserDetail;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = request.getHeader("Authorization");
-        System.out.println(authorizationHeader);
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
-        filterChain.doFilter(request, response);
-        if(Objects.nonNull(authorizationHeader)&& authorizationHeader.startsWith("Bearer ")){
+
+        if (Objects.nonNull(authorizationHeader) && authorizationHeader.startsWith("Bearer ")) {
             String jwtToken = authorizationHeader.substring(7);
-            UserDetails userDetails=null;
-            Optional<Long> authId=jwtTokenManager.getAuthIdFromToken(jwtToken);
-            if (authId.isPresent()){
-                userDetails= jwtUserDetail.loadUserByAuthId(authId.get());
-                UsernamePasswordAuthenticationToken authenticationToken=
-                        new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
-                System.out.println("UserDetails: "+userDetails);
-                System.out.println("getContext: "+SecurityContextHolder.getContext());
-
+            Optional<Long> authId = jwtTokenManager.getAuthIdFromToken(jwtToken);
+            if (authId.isPresent()) {
+                UserDetails userDetails = jwtUserDetail.loadUserByAuthId(authId.get());
+                if (userDetails != null) {
+                    UsernamePasswordAuthenticationToken authenticationToken =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                }
             }
         }
+
         filterChain.doFilter(request, response);
     }
 }
