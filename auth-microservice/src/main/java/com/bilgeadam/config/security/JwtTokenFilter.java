@@ -27,6 +27,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = request.getHeader("Authorization");
 
+        System.out.println("Before==>"+ SecurityContextHolder.getContext().getAuthentication() );
+        System.out.println("Before==>"+ SecurityContextHolder.getContext());
         if (Objects.nonNull(authorizationHeader) && authorizationHeader.startsWith("Bearer ")) {
             String jwtToken = authorizationHeader.substring(7);
             Optional<Long> authId = jwtTokenManager.getAuthIdFromToken(jwtToken);
@@ -36,6 +38,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+                    System.out.println("After==>"+ SecurityContextHolder.getContext().getAuthentication() );
+                    System.out.println("After==>"+ SecurityContextHolder.getContext());
                 }
             }
         }

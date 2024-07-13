@@ -91,4 +91,9 @@ public class AuthService {
     public Optional<Auth> findById(Long authId) {
         return authRepository.findById(authId);
     }
+
+    public Auth getCurrentAuth(String token) {
+        Long authId=jwtTokenManager.getAuthIdFromToken(token).orElseThrow(()->new AuthManagerException(ErrorType.INVALID_TOKEN));
+        return authRepository.findById(authId).orElseThrow(()->new AuthManagerException(ErrorType.USER_NOT_FOUND));
+    }
 }

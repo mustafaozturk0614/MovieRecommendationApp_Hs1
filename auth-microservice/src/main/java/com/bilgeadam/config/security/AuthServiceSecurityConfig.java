@@ -17,12 +17,19 @@ public class AuthServiceSecurityConfig {
 
    private final JwtTokenFilter getJwtTokenFilter;
 
+   private static  final  String [] WHITELIST = {
+           "/swagger-ui/**", "/v3/api-docs/**", "/api/v1/auth/Login", "/api/v1/auth/register",
+           "/api/v1/auth/activate_status"
+   };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
 
         httpSecurity.authorizeHttpRequests(req->
-                req.requestMatchers("/swagger-ui/**","/v3/api-docs/**","/api/v1/auth/Login","/api/v1/auth/register",
-                        "/api/v1/auth/activate_status").permitAll().anyRequest().authenticated()
+                req.requestMatchers(WHITELIST).permitAll()
+                        .requestMatchers("/api/v1/auth/find_by_id").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/auth/get-current-auth").hasAuthority("USER")
+                        .anyRequest().authenticated()
         );
 
 
