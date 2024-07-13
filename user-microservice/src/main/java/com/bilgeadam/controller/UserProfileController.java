@@ -23,14 +23,14 @@ public class UserProfileController {
     private final UserProfileService userProfileService;
 
     @PostMapping(SAVE)
-    public ResponseEntity<?> saveUserProfile(@RequestBody UserProfileSaveRequestDto dto){
+    public ResponseEntity<?> saveUserProfile(@RequestHeader("Authorization") String token,@RequestBody UserProfileSaveRequestDto dto){
 
         return ResponseEntity.ok(userProfileService.saveUserProfile(dto));
 
     }
 
     @PostMapping(ACTIVATE_STATUS)
-    public ResponseEntity<String> activateStatus(@RequestParam Long authId){
+    public ResponseEntity<String> activateStatus(@RequestHeader("Authorization") String token,@RequestParam Long authId){
         return ResponseEntity.ok(userProfileService.activateStatus(authId));
     }
 

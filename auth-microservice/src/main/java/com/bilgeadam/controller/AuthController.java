@@ -119,7 +119,8 @@ public class AuthController {
 
     @GetMapping("get-current-auth")
 
-    public ResponseEntity<Auth> getCurrentAuth(@RequestParam String token) {
+    public ResponseEntity<Auth> getCurrentAuth(@RequestHeader("Authorization") String token) {
+        System.out.println(token);
         return ResponseEntity.ok(authService.getCurrentAuth(token));
     }
 }

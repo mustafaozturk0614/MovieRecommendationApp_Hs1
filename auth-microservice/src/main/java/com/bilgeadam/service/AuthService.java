@@ -37,7 +37,8 @@ public class AuthService {
         authRepository.save(auth);
         // feing client ile haberleşme
         UserProfileSaveRequestDto userProfileSaveRequestDto=IAuthMapper.INSTANCE.toUserProfileSaveRequestDto(auth);
-        userManager.saveUserProfile(userProfileSaveRequestDto);
+        String token=jwtTokenManager.createToken(auth.getId(),auth.getRole().toString()).orElseThrow(()->new AuthManagerException(ErrorType.TOKEN_NOT_CREATED));
+        userManager.saveUserProfile("Bearer "+token,userProfileSaveRequestDto);
 
         RegisterResponseDto registerResponseDto=IAuthMapper.INSTANCE.toRegisterResponseDto(auth);
 
@@ -56,7 +57,7 @@ public class AuthService {
         if(auth.get().getActivationCode().equals(dto.getActivationCode())){
             auth.get().setStatus(EStatus.ACTIVE);
             authRepository.save(auth.get());
-            userManager.activateStatus(auth.get().getId());
+            userManager.activateStatus("Bearer "+jwtTokenManager.createToken(auth.get().getId(),auth.get().getRole().toString()).orElseThrow(()->new AuthManagerException(ErrorType.TOKEN_NOT_CREATED)),auth.get().getId());
             return "Aktivasyon Basarılı";
         }else {
             throw  new AuthManagerException(ErrorType.INVALID_ACTIVATION_CODE);
@@ -93,7 +94,7 @@ public class AuthService {
     }
 
     public Auth getCurrentAuth(String token) {
-        Long authId=jwtTokenManager.getAuthIdFromToken(token).orElseThrow(()->new AuthManagerException(ErrorType.INVALID_TOKEN));
+        Long authId=jwtTokenManager.getAuthIdFromToken(token.substring(7)).orElseThrow(()->new AuthManagerException(ErrorType.INVALID_TOKEN));
         return authRepository.findById(authId).orElseThrow(()->new AuthManagerException(ErrorType.USER_NOT_FOUND));
     }
 }

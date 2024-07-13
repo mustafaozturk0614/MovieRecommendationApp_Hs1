@@ -106,4 +106,8 @@ public class UserProfileService {
     public List<UserProfileFindAllResponseDto> findAll() {
         return IUserMapper.INSTANCE.toUserProfileFindAllResponseDto( userProfileRepository.findAll());
     }
+
+    public Optional<UserProfile> findByAuthId(Long   authId ) {
+        return userProfileRepository.findByAuthId(authId);
+    }
 }
