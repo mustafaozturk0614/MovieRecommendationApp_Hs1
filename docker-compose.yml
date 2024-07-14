@@ -1,0 +1,55 @@
+version: '3.1'
+
+networks:
+  movie_network_hs1:
+    driver: bridge
+services:
+  redis:
+    image: redis:latest
+    container_name: redis_hs1
+    ports:
+      - "6379:6379"
+    networks:
+      - movie_network_hs1
+  elasticsearch:
+    image: elasticsearch:7.17.12
+    container_name: elasticsearch_hs1
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 256M
+    networks:
+      - movie_network_hs1
+  kibana:
+    container_name: kibana_hs1
+    image: kibana:7.17.12
+    restart: always
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - movie_network_hs1
+  mongo:
+    image: mongo
+    restart: always
+    container_name: mongo_hs1
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - "29017:27017"
+    networks:
+      - movie_network_hs1

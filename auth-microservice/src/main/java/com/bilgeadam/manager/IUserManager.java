@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import static com.bilgeadam.constant.EndPoints.ACTIVATE_STATUS;
 import static com.bilgeadam.constant.EndPoints.SAVE;
 
-@FeignClient(url = "http://localhost:8091/api/v1/user",name = "auth-userprofile" ,dismiss404 = true)
+@FeignClient(url = "${feign.user}",name = "auth-userprofile" ,dismiss404 = true)
 public interface IUserManager {
 
     @PostMapping(SAVE)

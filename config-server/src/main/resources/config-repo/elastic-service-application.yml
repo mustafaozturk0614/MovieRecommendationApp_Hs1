@@ -1,0 +1,13 @@
+server:
+  port: 9091
+
+spring:
+  elasticsearch:
+    uris: ${hs1elasticurl}
+    username: ${hs1elasticusername}
+    password: ${hs1elasticpassword}
+jwt:
+  secret: ${hs1jwtsecret}
+  issuer: ${hs1jwtissuer}
+
+

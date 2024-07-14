@@ -4,12 +4,18 @@ server:
 spring:
   data:
     mongodb:
-      host: localhost
-      port: 29017
-      username: hs1
-      password: root
-      database: userProfileDb
-
+      host: ${hs1mongohost}
+      port: ${hs1mongoport}
+      username: ${hs1mongousername}
+      password: ${hs1mongopassword}
+      database: ${hs1mongodb}
 jwt:
-  secret: bilgeadamsecretkey
-  issuer: bilgeadam
+  secret: ${hs1jwtsecret}
+  issuer: ${hs1jwtissuer}
+
+redis:
+  host: ${hs1redis}
+  port: ${hs1redisport}
+feign:
+  auth: ${hs1feignauth}
+  elasticsearch: ${hs1feignelsatic}

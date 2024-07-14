@@ -1,11 +1,8 @@
-server:
-  port: 9091
 spring:
-  elasticsearch:
-    uris: http://localhost:9200
-    username: admin
-    password: root
-
-jwt:
-  secret: bilgeadamsecretkey
-  issuer: bilgeadam
+  cloud:
+    config:
+      uri: ${hs1configurl}
+  config:
+    import: "configserver:"
+  application:
+    name: elastic-service-application

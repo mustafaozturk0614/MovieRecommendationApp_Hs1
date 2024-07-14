@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import static com.bilgeadam.constant.EndPoints.UPDATE;
 
-@FeignClient(url = "http://localhost:8090/api/v1/auth", name = "user-auth")
+@FeignClient(url = "${feign.auth}", name = "user-auth")
 public interface AuthManager {
 
     @PutMapping(UPDATE)

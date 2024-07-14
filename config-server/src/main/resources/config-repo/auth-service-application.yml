@@ -1,5 +1,5 @@
 server:
-  port: 8095
+  port: 8090
 spring:
   security:
     user:
@@ -8,7 +8,7 @@ spring:
   datasource:
     username: postgres
     password: root
-    url:  jdbc:postgresql://localhost:5432/movieappauthdb
+    url: ${db_postgre_url}
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
@@ -18,6 +18,13 @@ spring:
       hibernate:
         format_sql: true
 jwt:
-  secret: bilgeadamsecretkey
-  issuer: bilgeadam
+  secret: ${hs1jwtsecret}
+  issuer: ${hs1jwtissuer}
+
+redis:
+  host: ${hs1redis}
+  port: ${hs1redisport}
+feign:
+  user: ${hs1feignuser}
+  elasticsearch: ${hs1feignelsatic}
 

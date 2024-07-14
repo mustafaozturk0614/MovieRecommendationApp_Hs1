@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import static com.bilgeadam.constant.EndPoints.SAVE;
 import static com.bilgeadam.constant.EndPoints.UPDATE;
 
-@FeignClient(url = "http://localhost:9091/api/v1/elastic/user", name = "user-elastic")
+@FeignClient(url = "${feign.elasticsearch}", name = "user-elastic")
 public interface ElasticManager {
 
     @PostMapping(SAVE)
