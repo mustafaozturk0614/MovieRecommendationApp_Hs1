@@ -53,3 +53,14 @@ services:
       - "29017:27017"
     networks:
       - movie_network_hs1
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_hs1
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=root
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - movie_network_hs1

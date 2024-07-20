@@ -55,6 +55,11 @@ public class AuthController {
         return ResponseEntity.ok(authService.register(dto));
     }
 
+    @PostMapping("register-with-rabbitmq")
+    public ResponseEntity<RegisterResponseDto> registerWithRabbitMq(@RequestBody @Valid RegisterRequestDto dto) {
+        return ResponseEntity.ok(authService.registerWithRabbitMq(dto));
+    }
+
     // activate activasyon kodu ile  authun statusunu pending den active e cekecek
     @PostMapping(ACTIVATE_STATUS)
     public ResponseEntity<String> activateStatus(@RequestBody ActivateRequestDto dto) {

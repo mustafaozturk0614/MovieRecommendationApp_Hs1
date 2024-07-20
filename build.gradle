@@ -55,6 +55,7 @@ allprojects {
         implementation libs.springCloudOpenFeign
         implementation libs.javaJwt
         implementation libs.springBootRedis
+        implementation libs.springBootRabbitMq
 
     }
     test {

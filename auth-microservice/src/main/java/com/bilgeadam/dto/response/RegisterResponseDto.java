@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @Builder
 public class RegisterResponseDto {
-
+    private String token;
     private Long id;
     private String activationCode;
     private String username;

@@ -11,11 +11,13 @@ import com.bilgeadam.exception.UserManagerException;
 import com.bilgeadam.manager.AuthManager;
 import com.bilgeadam.manager.ElasticManager;
 import com.bilgeadam.mapper.IUserMapper;
+import com.bilgeadam.rabbitmq.model.RegisterModel;
 import com.bilgeadam.repository.UserProfileRepository;
 import com.bilgeadam.utility.JwtTokenManager;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.bouncycastle.jcajce.provider.asymmetric.rsa.CipherSpi;
+import org.mapstruct.control.MappingControl;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -109,5 +111,19 @@ public class UserProfileService {
 
     public Optional<UserProfile> findByAuthId(Long   authId ) {
         return userProfileRepository.findByAuthId(authId);
+    }
+
+    public boolean createNewUserWithRabbitmq(RegisterModel model) {
+
+        try {
+            UserProfile userProfile=IUserMapper.INSTANCE.toUserProfile(model);
+            userProfileRepository.save(userProfile);
+            return  true;
+
+        }catch (Exception e){
+            throw new UserManagerException(ErrorType.USER_NOT_CREATED);
+        }
+
+
     }
 }

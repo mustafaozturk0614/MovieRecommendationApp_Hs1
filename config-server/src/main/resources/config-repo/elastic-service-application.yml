@@ -2,6 +2,11 @@ server:
   port: 9091
 
 spring:
+  rabbitmq:
+    host: ${hs1rabbitmqhost}  #localhost
+    port: ${hs1rabbitmqport}  #5672
+    username: ${hs1rabbitmqusername}
+    password: ${hs1rabbitmqpassword}
   elasticsearch:
     uris: ${hs1elasticurl}
     username: ${hs1elasticusername}

@@ -8,6 +8,7 @@ import com.bilgeadam.exception.AuthManagerException;
 import com.bilgeadam.exception.ErrorType;
 import com.bilgeadam.manager.IUserManager;
 import com.bilgeadam.mapper.IAuthMapper;
+import com.bilgeadam.rabbitmq.producer.RegisterProducer;
 import com.bilgeadam.repository.AuthRepository;
 import com.bilgeadam.utility.CodeGenerator;
 import com.bilgeadam.utility.JwtTokenManager;
@@ -26,6 +27,10 @@ public class AuthService {
     private final AuthRepository authRepository;
     private final IUserManager userManager;
     private final JwtTokenManager jwtTokenManager;
+    private final RegisterProducer registerProducer;
+
+
+
 
     @Transactional
     public RegisterResponseDto register(RegisterRequestDto dto) {
@@ -44,6 +49,24 @@ public class AuthService {
 
         return  registerResponseDto;//
 
+    }
+
+    @Transactional
+    public RegisterResponseDto registerWithRabbitMq(RegisterRequestDto dto) {
+        Auth auth= IAuthMapper.INSTANCE.toAuth(dto);
+        auth.setActivationCode(CodeGenerator.generateCode());
+        authRepository.save(auth);
+
+        registerProducer.sendNewUser(IAuthMapper.INSTANCE.toRegisterModel(auth));
+
+
+        RegisterResponseDto registerResponseDto=IAuthMapper.INSTANCE.toRegisterResponseDto(auth);
+            registerResponseDto
+                    .setToken(jwtTokenManager
+                            .createToken(auth.getId(),auth.getRole().toString())
+                            .orElseThrow(()->new AuthManagerException(ErrorType.TOKEN_NOT_CREATED)));
+
+        return registerResponseDto;
     }
 
     public String activateStatus(ActivateRequestDto dto) {
