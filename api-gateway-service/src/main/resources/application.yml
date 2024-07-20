@@ -1,0 +1,71 @@
+server:
+  port: 80
+
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: api-gateway-service
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-headers: "*"
+            allowed-methods:
+              - GET
+              - PUT
+              - POST
+              - DELETE
+      routes:
+        - id: auth-service
+          predicates:
+            - Path=/auth/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+            - name: CircuitBreaker
+              args:
+                name: auth-service-circuit-breaker
+                enabled: true
+                fallbackUri: forward:/fallback/auth-service
+          uri: http://localhost:8090
+        - id: user-service
+          predicates:
+            - Path=/user/**
+          uri: http://localhost:8091
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+            - name: CircuitBreaker
+              args:
+                name: user-service-circuit-breaker
+                enabled: true
+                fallbackUri: forward:/fallback/user-service
+        - id : elastic-service
+          predicates:
+            - Path=/elastic/**
+          uri: http://localhost:9091
+      default-filters:
+        - RewritePath= /(?<segment>.*), /api/v1/$\{segment}
+#resilience4j:
+#  circuitbreaker:
+#    configs:
+#      default:
+#        registerHealthIndicator: true
+#        slidingWindowSize: 100
+#        permittedNumberOfCallsInHalfOpenState: 10
+#        minimumNumberOfCalls: 10
+#        waitDurationInOpenState: 5s
+#        failureRateThreshold: 50
+#        eventConsumerBufferSize: 10
+#        recordExceptions:
+#          - java.io.IOException
+#          - java.util.concurrent.TimeoutException
+#        ignoreExceptions:
+#          - java.lang.IllegalArgumentException
+#  timelimiter:
+#    instances:
+#      auth-service-circuit-breaker:
+#        timeoutDuration: 5s
+#      user-service-circuit-breaker:
+#        timeoutDuration: 5s

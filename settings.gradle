@@ -4,4 +4,5 @@ include 'user-microservice'
 include 'config-server'
 include 'git-config-server'
 include 'elastic-search'
+include 'api-gateway-service'
 

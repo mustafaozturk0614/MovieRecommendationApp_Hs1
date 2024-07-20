@@ -19,7 +19,7 @@ public class AuthServiceSecurityConfig {
 
    private static  final  String [] WHITELIST = {
            "/swagger-ui/**", "/v3/api-docs/**", "/api/v1/auth/Login", "/api/v1/auth/register",
-           "/api/v1/auth/activate_status"
+           "/api/v1/auth/activate_status","/api/v1/auth/find_all","/auth/find_all"
    };
 
     @Bean
